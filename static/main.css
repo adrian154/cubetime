@@ -24,15 +24,25 @@ main {
 #timer-pane {
     display: flex;
     margin: auto;
+    flex-direction: column;
+}
+
+#timer, 
+#inspect-warning {
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
 }
 
 #timer {
-    font-feature-settings: 'tnum';
-    font-family: 'Roboto Mono', monospace;
     font-weight: 200;
     font-size: 6em;
     transition: color 0.1s;
 }
+
+#inspect-warning {
+    font-size: 3em;
+}
+
 
 #timer.space-pressed {
     color: #ffbb00;

@@ -1,4 +1,5 @@
-const timerElement = document.getElementById("timer");
+const timerElement = document.getElementById("timer"),
+      inspectWarning = document.getElementById("inspect-warning");
 
 const formatTime = msTotal => {
 
@@ -45,6 +46,9 @@ let timer = {
             timerElement.classList.add("ready");
         else
             timerElement.classList.remove("ready");
+
+        if(targetState == TimerState.RUNNING)
+            inspectWarning.textContent = "";
 
         if(timer.becomeReadyTimeout && timer.targetState != TimerState.READY) {
             clearTimeout(timer.becomeReadyTimeout);
@@ -106,15 +110,34 @@ window.addEventListener("keyup", event => {
 const animateTimer = () => {
 
     if(timer.state == TimerState.INSPECTION || timer.state == TimerState.SPACE_PRESSED || timer.state == TimerState.READY) {
-        if(options.showInspectionTime)
-            timerElement.textContent = Math.ceil((15000 - (performance.now() - timer.inspectionStartTime)) / 1000);
-        else
-            timerElement.textContent = "inspect";
+        
+        const elapsed = performance.now() - timer.inspectionStartTime;
+        if(elapsed > 15000) {
+            inspectWarning.textContent = "";
+        } else if(elapsed > 12000) {
+            inspectWarning.textContent = "12 seconds";
+        } else if(elapsed > 8000) {
+            inspectWarning.textContent = "8 seconds";
+        }
+
+        if(elapsed < 15000) {
+            if(options.showInspectionTime) {
+                timerElement.textContent = Math.ceil(15 - elapsed / 1000);
+            } else {
+                timerElement.textContent = "inspect";
+            }
+        } else if(elapsed < 17000) {
+            timerElement.textContent = "+2";
+        }  else {
+            timerElement.textContent = "DNF";
+        }
+
     } else if(timer.state == TimerState.RUNNING) {
-        if(options.showSolveTime)
+        if(options.showSolveTime) {
             timerElement.textContent = formatTime(performance.now() - timer.solveStartTime);
-        else
+        } else {
             timerElement.textContent = "solve!";
+        }
     } else {
         timerElement.textContent = formatTime(timer.lastTime);
     }
