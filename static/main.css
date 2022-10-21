@@ -31,4 +31,13 @@ main {
     font-family: 'Roboto Mono', monospace;
     font-weight: 200;
     font-size: 6em;
+    transition: color 0.1s;
+}
+
+#timer.space-pressed {
+    color: #ffbb00;
+}
+
+#timer.ready {
+    color: #00ff11;
 }

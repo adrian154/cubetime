@@ -1,4 +1,5 @@
 * WCA scramble
 * draw scramble
-* timer 
-    * time to hold down space
+* sessions
+* sync
+* multi phase
