@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;1,400;1,500&display=swap');
 
 body, html {
     height: 100%;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
 }
 
 body {
@@ -44,10 +47,10 @@ main {
 }
 
 
-#timer.space-pressed {
-    color: #ffbb00;
+#timer.not-ready {
+    color: #ff0000;
 }
 
 #timer.ready {
-    color: #00ff11;
+    color: #00ff00;
 }

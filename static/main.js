@@ -1,148 +1,215 @@
-const timerElement = document.getElementById("timer"),
-      inspectWarning = document.getElementById("inspect-warning");
+// constants
+const Penalty = {
+    PLUS2: "+2",
+    DNF: "DNF"
+};
 
-const formatTime = msTotal => {
-
-    const milliseconds = String(Math.floor(msTotal % 1000 / 10)).padStart(2, '0');
-    const secondsTotal = Math.floor(msTotal / 1000);
-    const minutes = Math.floor(secondsTotal / 60),
-          seconds = secondsTotal % 60;
-
-    if(minutes > 0) {
-        return `${minutes}:${String(seconds).padStart(2, '0')}.${milliseconds}`;
+const getInspectPenalty = duration => {
+    
+    if(duration > 17000) {
+        return Penalty.DNF;
     }
 
-    return `${secondsTotal}.${milliseconds}`;
+    if(duration > 15000) {
+        return Penalty.PLUS2;
+    }
 
 };
 
+// globals
 const options = {
     spacePressTime: 550,
     showInspectionTime: true,
-    showSolveTime: true
+    showSolveTime: true,
+    useInspection: true
 };
 
-// timer state
-const TimerState = {
-    IDLE: "idle",
-    BEFORE_INSPECT: "before inspect",
-    INSPECTION: "inspect",
-    SPACE_PRESSED: "space pressed",
-    READY: "ready",
-    RUNNING: "running"
+const formatTime = msTotal => {
+
+    const fractionalPart = String(Math.floor(msTotal % 1000 / 10)).padStart(2, '0');
+    const secondsTotal = Math.floor(msTotal / 1000),
+          minutes = Math.floor(secondsTotal / 60),
+          seconds = secondsTotal % 60;
+
+    if(minutes > 0) {
+        return `${minutes}:${String(seconds).padStart(2, '0')}.${fractionalPart}`;
+    }
+
+    return `${secondsTotal}.${fractionalPart}`;
+
 };
 
-let timer = {
-    state: TimerState.IDLE,
-    lastTime: 0,
-    changeState: targetState => {
+const createTimer = () => {
+
+    // state constants
+    const IDLE = 0,
+          BEFORE_INSPECT = 1,
+          INSPECT = 2,
+          SPACE_PRESSED = 3,
+          READY = 4,
+          RUNNING = 5;
+
+    // penalties
+    const PLUS2 = 0,
+          DNF = 1;
+
+    const timer = document.getElementById("timer"),
+          inspectWarning = document.getElementById("inspect-warning");
+
+    // timer state
+    let state = IDLE;
+    let penalty = null;
+    let inspectionStartTime = null;
+    let becomeReadyTimeout = null;
+    let solveStartTime = null;
+
+    const updateTimer = () => { 
         
-        if(targetState == TimerState.SPACE_PRESSED)
-            timerElement.classList.add("space-pressed");
-        else
-            timerElement.classList.remove("space-pressed");
+        if(state == INSPECT || options.useInspection && (state == SPACE_PRESSED || state == READY)) {
 
-        if(targetState == TimerState.READY || targetState == TimerState.BEFORE_INSPECT)
-            timerElement.classList.add("ready");
-        else
-            timerElement.classList.remove("ready");
+            const inspectDuration = performance.now() - inspectionStartTime;
+            const penalty = getInspectPenalty(inspectDuration);
 
-        if(targetState == TimerState.RUNNING)
-            inspectWarning.textContent = "";
-
-        if(timer.becomeReadyTimeout && timer.targetState != TimerState.READY) {
-            clearTimeout(timer.becomeReadyTimeout);
-            timer.becomeReadyTimeout = null;
-        }
-
-        if(targetState == TimerState.INSPECTION) {
-            if(timer.state == TimerState.BEFORE_INSPECT) {
-                timer.inspectionStartTime = performance.now();
-            }
-        } else if(targetState == TimerState.SPACE_PRESSED) {
-            timer.becomeReadyTimeout = setTimeout(() => timer.changeState(TimerState.READY), options.spacePressTime);
-        } else if(targetState == TimerState.RUNNING) {
-            timer.solveStartTime = performance.now();
-        }
-
-        timer.state = targetState;
-
-    }
-}; 
-
-// timer controls
-window.addEventListener("keydown", event => {
-    
-    // ignore repeat keypressses 
-    if(event.repeat) return;
-
-    if(timer.state == TimerState.RUNNING) {
-        timer.changeState(TimerState.IDLE);
-        const time = performance.now() - timer.solveStartTime;
-        timer.lastTime = time;
-    } else if(event.key == " ") {
-        if(timer.state == TimerState.IDLE) {
-            timer.changeState(TimerState.BEFORE_INSPECT);
-        } else if(timer.state == TimerState.INSPECTION) {
-            timer.changeState(TimerState.SPACE_PRESSED);
-        }
-    }
-
-});
-
-window.addEventListener("keyup", event => {
-
-    // if the timer is running, any keypress stops the clock
-    if(timer.state == TimerState.RUNNING) {
-        timer.changeState(TimerState.IDLE);
-    } else if(event.key == " ") {
-
-        if(timer.state == TimerState.BEFORE_INSPECT || timer.state == TimerState.SPACE_PRESSED) {
-            timer.changeState(TimerState.INSPECTION);
-        } else if(timer.state == TimerState.READY) {
-            timer.changeState(TimerState.RUNNING);
-        }
-
-    }
-
-});
-
-const animateTimer = () => {
-
-    if(timer.state == TimerState.INSPECTION || timer.state == TimerState.SPACE_PRESSED || timer.state == TimerState.READY) {
-        
-        const elapsed = performance.now() - timer.inspectionStartTime;
-        if(elapsed > 15000) {
-            inspectWarning.textContent = "";
-        } else if(elapsed > 12000) {
-            inspectWarning.textContent = "12 seconds";
-        } else if(elapsed > 8000) {
-            inspectWarning.textContent = "8 seconds";
-        }
-
-        if(elapsed < 15000) {
-            if(options.showInspectionTime) {
-                timerElement.textContent = Math.ceil(15 - elapsed / 1000);
+            // update main timer text
+            if(penalty) {
+                timer.textContent = penalty;
+            } else if(options.showInspectionTime) {
+                timer.textContent = Math.ceil(15 - inspectDuration / 1000);
             } else {
-                timerElement.textContent = "inspect";
+                timer.textContent = "inspect";
             }
-        } else if(elapsed < 17000) {
-            timerElement.textContent = "+2";
-        }  else {
-            timerElement.textContent = "DNF";
+
+            // show warning
+            if(inspectDuration > 12000) {
+                inspectWarning.textContent = "12 seconds";
+            } else if(inspectDuration > 8000) {
+                inspectWarning.textContent = "8 seconds";
+            }
+
+        } else if(state == RUNNING) {
+            if(options.showSolveTime) {
+                timer.textContent = formatTime(performance.now() - solveStartTime);
+            } else {
+                timer.textContent = "solve!";
+            }
         }
 
-    } else if(timer.state == TimerState.RUNNING) {
-        if(options.showSolveTime) {
-            timerElement.textContent = formatTime(performance.now() - timer.solveStartTime);
+        requestAnimationFrame(updateTimer);
+
+    };
+
+    updateTimer();
+
+    const changeState = targetState => {
+
+        // update timer element classes
+        if(targetState == SPACE_PRESSED) {
+            timer.classList.add("not-ready");
         } else {
-            timerElement.textContent = "solve!";
+            timer.classList.remove("not-ready");
         }
-    } else {
-        timerElement.textContent = formatTime(timer.lastTime);
-    }
 
-    requestAnimationFrame(animateTimer);
+        if(targetState == READY || targetState == BEFORE_INSPECT) {
+            timer.classList.add("ready");
+        } else {
+            timer.classList.remove("ready");
+        }
+
+        // clear the inspection time warning once the solve begins
+        if(targetState == RUNNING) {
+            inspectWarning.textContent = "";
+        }
+        
+        // if the become ready timeout is interrupted, cancel it
+        if(becomeReadyTimeout && targetState != READY) {
+            clearTimeout(becomeReadyTimeout);
+            becomeReadyTimeout = null;
+        }
+
+        if(state == BEFORE_INSPECT && targetState == INSPECT) {
+            inspectionStartTime = performance.now();
+        } else if(targetState == SPACE_PRESSED) {
+            becomeReadyTimeout = setTimeout(() => changeState(READY), options.spacePressTime);
+        } else if(targetState == RUNNING) {
+            
+            // begin the solve
+            const now = performance.now();
+            solveStartTime = now;
+
+            // check if any penalties need to be applied
+            if(options.useInspection) {
+                penalty = getInspectPenalty(now - inspectionStartTime);
+            }
+
+        } else if(targetState == IDLE) {
+
+            if(state == RUNNING) {
+                const solveTime = performance.now() - solveStartTime;
+                console.log("solve time:", solveTime, "penalty:", penalty);
+            }
+
+            // reset fields
+            penalty = null;
+            inspectionStartTime = null;
+            solveStartTime = null;
+
+        }
+
+        state = targetState;
+
+    };
+
+    const onTriggerPressed = () => {
+
+        if(state == IDLE) {
+            if(options.useInspection) {
+                changeState(BEFORE_INSPECT);
+            } else {
+                changeState(SPACE_PRESSED);
+            }
+        } else if(state == INSPECT) {
+            changeState(SPACE_PRESSED);
+        }
+
+    };
+
+    const onTriggerReleased = () => {
+
+        if(state == BEFORE_INSPECT) {
+            changeState(INSPECT);
+        } else if(state == SPACE_PRESSED) {
+            if(options.useInspection) {
+                changeState(INSPECT);
+            } else {
+                changeState(IDLE);
+            }
+        } else if(state == READY) {
+            changeState(RUNNING);
+        }
+
+    };
+
+    window.addEventListener("keydown", event => {
+        
+        // ignore repeat keypresses
+        if(event.repeat) return;
+
+        if(state == RUNNING) {
+            changeState(IDLE);
+        } else if(event.key == " ") {
+            onTriggerPressed();
+        }
+
+    });
+
+    window.addEventListener("keyup", event => {
+        if(event.key === " ") {
+            onTriggerReleased();
+        }
+    });
+
+    // TODO: touchscreen
+
 };
 
-animateTimer();
+const timer = createTimer();
