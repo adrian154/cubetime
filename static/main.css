@@ -19,14 +19,20 @@ main {
 }
 
 #menu-pane {
-    flex-basis: 10em;
+    flex-basis: 18em;
     padding: 1em;
     background-color: #eee;
 }
 
 #timer-pane {
+    flex-basis: 100%;
     display: flex;
+    flex-direction: column;
+}
+
+#timer-outer {
     margin: auto;
+    display: flex;
     flex-direction: column;
 }
 

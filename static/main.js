@@ -54,7 +54,8 @@ const createTimer = () => {
           DNF = 1;
 
     const timer = document.getElementById("timer"),
-          inspectWarning = document.getElementById("inspect-warning");
+          inspectWarning = document.getElementById("inspect-warning"),
+          timerPane = document.getElementById("timer-pane");
 
     // timer state
     let state = IDLE;
@@ -208,7 +209,19 @@ const createTimer = () => {
         }
     });
 
-    // TODO: touchscreen
+    timerPane.addEventListener("touchstart", event => {
+        if(state == RUNNING) {
+            changeState(IDLE);
+        } else {
+            onTriggerPressed();
+        }
+        event.preventDefault();
+    });
+
+    timerPane.addEventListener("touchend", event => {
+        onTriggerReleased();
+        event.preventDefault();
+    });
 
 };
 
