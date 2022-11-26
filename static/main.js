@@ -4,6 +4,10 @@ const Penalty = {
     DNF: "DNF"
 };
 
+// assets
+const WARNING_8S = new Audio("8s-warning.mp3"),
+      WARNING_12S = new Audio("12s-warning.mp3");
+
 const getInspectPenalty = duration => {
     
     if(duration > 17000) {
@@ -21,7 +25,8 @@ const options = {
     spacePressTime: 550,
     showInspectionTime: true,
     showSolveTime: true,
-    useInspection: true
+    useInspection: true,
+    voiceAlert: true
 };
 
 const formatTime = msTotal => {
@@ -63,6 +68,7 @@ const createTimer = () => {
     let inspectionStartTime = null;
     let becomeReadyTimeout = null;
     let solveStartTime = null;
+    let lastSoundPlayed = null;
 
     const updateTimer = () => { 
         
@@ -83,8 +89,16 @@ const createTimer = () => {
             // show warning
             if(inspectDuration > 12000) {
                 inspectWarning.textContent = "12 seconds";
+                if(lastSoundPlayed != WARNING_12S && options.voiceAlert) {
+                    WARNING_12S.play();
+                    lastSoundPlayed = WARNING_12S;
+                }
             } else if(inspectDuration > 8000) {
                 inspectWarning.textContent = "8 seconds";
+                if(lastSoundPlayed != WARNING_8S && options.voiceAlert) {
+                    WARNING_8S.play();
+                    lastSoundPlayed = WARNING_8S;
+                }
             }
 
         } else if(state == RUNNING) {
@@ -153,6 +167,7 @@ const createTimer = () => {
             penalty = null;
             inspectionStartTime = null;
             solveStartTime = null;
+            lastSoundPlayed = null;
 
         }
 

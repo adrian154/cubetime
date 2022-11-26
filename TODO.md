@@ -3,3 +3,5 @@
 * sessions
 * sync
 * multi phase
+* DNF with ESC
+* cancel inspect
