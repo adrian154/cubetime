@@ -7,17 +7,80 @@
         <meta property="og:title" content="CubeTime">
         <meta property="og:description" content="The easiest way to time your Rubik's Cube solves">
         <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     </head>
     <body>
         <main>
             <div id="menu-pane">
-                Stuff goes here eventually
+                <div>Timer</div>
+                <div>Settings</div>
             </div>
-            <div id="timer-pane">
+            <div id="timer-pane" style="display: none">
                 <div id="timer-outer">
                     <span id="timer">0.00</span>
                     <span id="inspect-warning"></span>
                 </div>
+            </div>
+            <div id="settings-pane">
+                <h1>Settings</h1>
+                <h2>Timer</h2>
+                <table class="settings-group">
+                    <tr>
+                        <td>
+                            <b>Use inspection time</b>
+                            <p>When enabled, there will be a 15-second inspection countdown before the timer begins.</p>
+                        </td>
+                        <td>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Hold down time</b>
+                            <p>How long the spacebar needs to be held for the timer to turn green. Use a value of 0.55 to simulate the Stackmat delay.</p>
+                        </td>
+                        <td>
+                            <input type="number" value="0.55" max="1" min="0" step="0.05">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Play voice alerts</b>
+                            <p>Voice warnings will be played when 8 and 12 seconds of inspection time have elapsed.</p>
+                        </td>
+                        <td>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Show inspection countdown</b>
+                        </td>
+                        <td>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Show timer during solve</b>
+                        </td>
+                        <td>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </main>
         <script src="main.js"></script>

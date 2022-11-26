@@ -1,8 +1,60 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;1,400;1,500&display=swap');
 
+/* ----- MISC ----- */
+h1 {
+    font-weight: 500;
+}
+
+/* ----- TOGGLE SWITCH ----- */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 3em;
+    height: 1.5em;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 1.5em;
+    transition: 0.2s;
+}
+
+.slider:before {
+    position: absolute;
+    content: " ";
+    top: 0.2em;
+    left: 0.2em;
+    width: 1.1em;
+    height: 1.1em;
+    background-color: #fff;
+    border-radius: 1.1em;
+    transition: 0.2s;
+}
+
+input:checked + .slider {
+    background-color: #036ffc;
+}
+
+input:checked + .slider:before {
+    transform: translateX(1.5em);
+}
+
+/* ----- LAYOUT ----- */
 body, html {
     height: 100%;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 16px;
 }
 
@@ -19,16 +71,20 @@ main {
 
 #menu-pane {
     flex-basis: 18em;
-    padding: 1em;
     background-color: #eee;
-}
-
-#timer-pane {
-    flex-basis: 100%;
     display: flex;
     flex-direction: column;
 }
 
+#timer-pane,
+#settings-pane {
+    flex-basis: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* ----- TIMER ----- */
 #timer-outer {
     margin: auto;
     display: flex;
@@ -59,4 +115,36 @@ main {
 
 #timer.ready {
     color: #00ff00;
+}
+
+/* ----- SETTINGS ----- */
+#settings-pane {
+    padding: 1em 2em;
+}
+
+.settings-group {
+    max-width: 40em;
+    table-layout: fixed;
+}
+
+.settings-group td {
+    padding: 1em 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.settings-group tr:last-child td {
+    border-bottom: none;
+}
+
+.settings-group td {
+    vertical-align: top;
+    width: 50%;
+}
+
+.settings-group td p {
+    opacity: 80%;
+}
+
+.settings-group td:last-child {
+    text-align: right;
 }

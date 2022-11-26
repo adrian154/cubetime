@@ -54,10 +54,6 @@ const createTimer = () => {
           READY = 4,
           RUNNING = 5;
 
-    // penalties
-    const PLUS2 = 0,
-          DNF = 1;
-
     const timer = document.getElementById("timer"),
           inspectWarning = document.getElementById("inspect-warning"),
           timerPane = document.getElementById("timer-pane");
