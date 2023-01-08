@@ -60,31 +60,31 @@ body, html {
 
 body {
     margin: 0;
-}
-
-main {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
     height: 100%;
 }
 
-#menu-pane {
-    flex-basis: 18em;
-    background-color: #eee;
-    display: flex;
-    flex-direction: column;
+main {
+    height: 100%;
 }
 
-#timer-pane,
-#settings-pane {
-    flex-basis: 100%;
-    display: flex;
-    flex-direction: column;
+nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     box-sizing: border-box;
+    background-color: #eee;
+    display: flex;
+    flex-direction: row;
+    padding: 0.5em;
 }
 
 /* ----- TIMER ----- */
+#timer-pane {
+    display: flex;
+    height: 100%;
+}
+
 #timer-outer {
     margin: auto;
     display: flex;
@@ -93,7 +93,7 @@ main {
 
 #timer, 
 #inspect-warning {
-    font-family: 'Roboto', sans-serif;
+    font-family: sans-serif;
     font-variant-numeric: tabular-nums;
     text-align: center;
 }
@@ -142,9 +142,37 @@ main {
 }
 
 .settings-group td p {
-    opacity: 80%;
+    color: #858585;
 }
 
 .settings-group td:last-child {
     text-align: right;
+}
+
+/* ----- ABOUT ----- */
+#info-pane {
+    padding: 1em 2em;
+    max-width: 40em;
+}
+
+/* ----- NAVIGATION ----- */
+nav button.material-symbols-outlined {
+    border: none;
+    background: none;
+    color: #aaaaaa;
+    font-size: 2.5em;
+    cursor: pointer;
+    transition: color 0.1s;
+}
+
+nav button:hover {
+    color: #444444;
+}
+
+nav button.current {
+    color: #0099ff;
+}
+
+#nav-settings {
+    margin-left: auto;
 }

@@ -10,18 +10,37 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     </head>
     <body>
+
+        <nav>
+            <button id="nav-timer" class="material-symbols-outlined">timer</button>
+            <button id="nav-session" class="material-symbols-outlined">format_list_numbered</button>
+            <button id="nav-settings" class="material-symbols-outlined">settings</button>
+            <button id="nav-info" class="material-symbols-outlined">info</button>
+        </nav>
+
         <main>
-            <div id="menu-pane">
-                <div>Timer</div>
-                <div>Settings</div>
+
+            <div id="info-pane" style="display: none">
+                
+                <h1>About</h1>
+                <p>CubeTime is a minimalist timer app built for speedcubers.</p>
+                <p>If you are interested in contributing to the development of CubeTime, check out our <a href="https://github.com/adrian154/cubetime">GitHub repository</a>.</p>
+                <p>Did you discover a bug, or is there a feature you would like to see added to CubeTime? Please <a href="https://github.com/adrian154/cubetime/issues">create an issue</a> on GitHub.</p>
+
+                <h1>Usage Guide</h1>
+                <p>To start the timer, simply hold the spacebar until the timer turns green. Then, begin solving. Press the spacebar again to stop the timer once you've finished your attempt. This interface is modeled after the <a href="https://www.speedsolving.com/wiki/index.php/StackMat">StackMat timer</a> that is used at official competitions.</p>
+                <p>CubeTime makes it easy for you to keep track of all your times across devices. Click the Session tab to see a list of times, as well as statistics and time trends.</p>
+
             </div>
+            
             <div id="timer-pane" style="display: none">
                 <div id="timer-outer">
                     <span id="timer">0.00</span>
                     <span id="inspect-warning"></span>
                 </div>
             </div>
-            <div id="settings-pane">
+
+            <div id="settings-pane" style="display: none">
                 <h1>Settings</h1>
                 <h2>Timer</h2>
                 <table class="settings-group">
@@ -82,7 +101,10 @@
                     </tr>
                 </table>
             </div>
+
         </main>
+        
         <script src="main.js"></script>
+
     </body>
 </html>
