@@ -187,6 +187,7 @@ nav button.material-symbols-outlined {
     font-size: 2.5em;
     cursor: pointer;
     transition: color 0.1s;
+    padding: 0 0.1em;
 }
 
 nav button:hover {
