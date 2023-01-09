@@ -77,18 +77,28 @@ nav {
     display: flex;
     flex-direction: row;
     padding: 0.5em;
+    z-index: 1;
+}
+
+#logo {
+    position: fixed;
+    top: 1em;
+    left: 1em;
+    width: 2.5em;
+    height: 2.5em;
 }
 
 /* ----- TIMER ----- */
 #timer-pane {
     display: flex;
-    height: 100%;
+    height: calc(100% - 3.5em);
 }
 
 #timer-outer {
     margin: auto;
     display: flex;
     flex-direction: column;
+    padding: 1em;
 }
 
 #timer, 
@@ -102,6 +112,7 @@ nav {
     font-weight: 200;
     font-size: 6em;
     transition: color 0.1s;
+    margin: 0.5em 0;
 }
 
 #inspect-warning {
@@ -115,6 +126,19 @@ nav {
 
 #timer.ready {
     color: #00ff00;
+}
+
+#scramble {
+    font-size: 20pt;
+    text-align: center;
+}
+
+.fade-during-solve {
+    transition: opacity 0.1s;
+}
+
+.active .fade-during-solve {
+    opacity: 0;
 }
 
 /* ----- SETTINGS ----- */

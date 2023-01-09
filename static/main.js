@@ -65,6 +65,7 @@ const createTimer = () => {
     let becomeReadyTimeout = null;
     let solveStartTime = null;
     let lastSoundPlayed = null;
+    let lastTime = 0;
 
     const updateTimer = () => { 
         
@@ -101,8 +102,10 @@ const createTimer = () => {
             if(options.showSolveTime) {
                 timer.textContent = formatTime(performance.now() - solveStartTime);
             } else {
-                timer.textContent = "solve!";
+                timer.textContent = "solve";
             }
+        } else {
+            timer.textContent = formatTime(lastTime);
         }
 
         requestAnimationFrame(updateTimer);
@@ -126,12 +129,17 @@ const createTimer = () => {
             timer.classList.remove("ready");
         }
 
+        // if starting timer, fade out non-timer elements
+        if(targetState == INSPECT || targetState == RUNNING) {
+            timerPane.classList.add("active");
+        }
+
         // clear the inspection time warning once the solve begins
         if(targetState == RUNNING) {
             inspectWarning.textContent = "";
         }
         
-        // if the become ready timeout is interrupted, cancel it
+        // if the becomeReady timeout is interrupted, cancel it
         if(becomeReadyTimeout && targetState != READY) {
             clearTimeout(becomeReadyTimeout);
             becomeReadyTimeout = null;
@@ -156,6 +164,7 @@ const createTimer = () => {
 
             if(state == RUNNING) {
                 const solveTime = performance.now() - solveStartTime;
+                lastTime = solveTime;
                 console.log("solve time:", solveTime, "penalty:", penalty);
             }
 
@@ -164,6 +173,9 @@ const createTimer = () => {
             inspectionStartTime = null;
             solveStartTime = null;
             lastSoundPlayed = null;
+
+            // un-fade everything
+            timerPane.classList.remove("active");
 
         }
 
