@@ -141,6 +141,22 @@ nav {
     opacity: 0;
 }
 
+#session-selector {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+}
+
+#session-selector select {
+    width: 10em;
+    height: 2em;
+}
+
+#session-selector button {
+    width: 2em;
+    height: 2em;
+}
+
 /* ----- SETTINGS ----- */
 #settings-pane {
     padding: 1em 2em;
@@ -179,6 +195,12 @@ nav {
     max-width: 40em;
 }
 
+#about-img {
+    width: 1em;
+    position: relative;
+    top: 3px;
+}
+
 /* ----- NAVIGATION ----- */
 nav button.material-symbols-outlined {
     border: none;
@@ -188,6 +210,7 @@ nav button.material-symbols-outlined {
     cursor: pointer;
     transition: color 0.1s;
     padding: 0 0.1em;
+    outline: none;
 }
 
 nav button:hover {

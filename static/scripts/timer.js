@@ -4,31 +4,6 @@ const Penalty = {
     DNF: "DNF"
 };
 
-// assets
-const WARNING_8S = new Audio("8s-warning.mp3"),
-      WARNING_12S = new Audio("12s-warning.mp3");
-
-const getInspectPenalty = duration => {
-    
-    if(duration > 17000) {
-        return Penalty.DNF;
-    }
-
-    if(duration > 15000) {
-        return Penalty.PLUS2;
-    }
-
-};
-
-// globals
-const options = {
-    spacePressTime: 550,
-    showInspectionTime: true,
-    showSolveTime: true,
-    useInspection: true,
-    voiceAlert: true
-};
-
 const formatTime = msTotal => {
 
     const fractionalPart = String(Math.floor(msTotal % 1000 / 10)).padStart(2, '0');
@@ -44,7 +19,25 @@ const formatTime = msTotal => {
 
 };
 
+
 const createTimer = () => {
+
+    const getInspectPenalty = duration => {
+    
+        if(duration > 17000) {
+            return Penalty.DNF;
+        }
+    
+        if(duration > 15000) {
+            return Penalty.PLUS2;
+        }
+    
+    };
+
+    // assets
+    const WARNING_8S = new Audio("8s-warning.mp3"),
+          WARNING_12S = new Audio("12s-warning.mp3");
+
 
     // state constants
     const IDLE = 0,
@@ -247,44 +240,3 @@ const createTimer = () => {
     });
 
 };
-
-const timer = createTimer();
-
-// add events for nav button
-const setupNavButtons = () => {
-
-    // map of pane ID -> button ID
-    const PANES = {
-        "info-pane": "nav-info",
-        "timer-pane": "nav-timer",
-        "settings-pane": "nav-settings"
-    };
-
-    let currentPane = null,
-        currentPaneButton = null;
-
-    for(const paneID in PANES) {
-
-        const pane = document.getElementById(paneID);
-        const button = document.getElementById(PANES[paneID]);
-        
-        button.addEventListener("click", () => {
-            if(currentPane) {
-                currentPane.style.display = "none";
-                currentPaneButton.classList.remove("current");
-            }
-            pane.style.display = "";
-            button.classList.add("current");
-            currentPane = pane;
-            currentPaneButton = button;
-        });
-
-        if(paneID === "timer-pane") {
-            button.click();
-        }
-
-    }
-
-};
-
-setupNavButtons();
