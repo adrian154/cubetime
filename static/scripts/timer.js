@@ -170,6 +170,12 @@ const createTimer = () => {
             // un-fade everything
             timerPane.classList.remove("active");
 
+            // kkludge
+            fetch("https://scramble.bithole.dev/").then(resp => resp.json()).then(scramble => {
+                const moves = scramble.moves.match(/../g).map(move => move[0] + (move[1] == '1' ? '' : move[1] == '2' ? '2' : "'")).join(" ");
+                document.getElementById("scramble").textContent = moves;
+            });
+
         }
 
         state = targetState;
