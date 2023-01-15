@@ -84,7 +84,8 @@ nav {
 @media (max-width: 600px) {
     nav {
         width: unset;
-        margin: 1em;
+        bottom: 2em;
+        left: 1em;
     }
 }
 
