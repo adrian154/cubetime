@@ -81,6 +81,12 @@ nav {
     z-index: 1;
 }
 
+@media (max-width: 600px) {
+    nav {
+        padding-bottom: 1em;
+    }
+}
+
 #logo {
     position: fixed;
     top: 1em;
