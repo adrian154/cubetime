@@ -83,7 +83,8 @@ nav {
 
 @media (max-width: 600px) {
     nav {
-        padding-bottom: 1em;
+        width: unset;
+        margin: 1em;
     }
 }
 
