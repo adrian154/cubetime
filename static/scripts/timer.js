@@ -35,8 +35,8 @@ const createTimer = () => {
     };
 
     // assets
-    const WARNING_8S = new Audio("8s-warning.mp3"),
-          WARNING_12S = new Audio("12s-warning.mp3");
+    const WARNING_8S = new Audio("sounds/8s-warning.mp3"),
+          WARNING_12S = new Audio("sounds/12s-warning.mp3");
 
 
     // state constants
