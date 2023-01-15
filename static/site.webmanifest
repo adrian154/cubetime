@@ -2,6 +2,7 @@
     "name": "CubeTime",
     "short_name": "CubeTime",
     "description": "The easiest way to time your twisty puzzle solves",
+    "start_url": "/",
     "icons": [
         {
             "src": "/images/favicon-192x192.png",
