@@ -124,7 +124,7 @@ const createTimer = () => {
 
         // if starting timer, fade out non-timer elements
         if(targetState == INSPECT || targetState == RUNNING) {
-            timerPane.classList.add("active");
+            document.body.classList.add("timer-running");
         }
 
         // clear the inspection time warning once the solve begins
@@ -168,7 +168,7 @@ const createTimer = () => {
             lastSoundPlayed = null;
 
             // un-fade everything
-            timerPane.classList.remove("active");
+            document.body.classList.remove("timer-running");
 
             // kkludge
             fetch("https://scramble.bithole.dev/").then(resp => resp.json()).then(scramble => {

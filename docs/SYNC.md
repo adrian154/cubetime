@@ -1,0 +1,1 @@
+CubeTime clients try to maintain a full copy of the user's 

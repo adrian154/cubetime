@@ -82,6 +82,8 @@ nav {
 }
 
 @media (max-width: 600px) {
+
+    /* Make nav float off bottom; this makes pressing the buttons easier on rounded screens */
     nav {
         width: unset;
         bottom: 2em;
@@ -146,7 +148,7 @@ nav {
     transition: opacity 0.1s;
 }
 
-.active .fade-during-solve {
+.timer-running .fade-during-solve {
     opacity: 0;
 }
 
